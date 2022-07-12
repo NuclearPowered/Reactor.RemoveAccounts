@@ -4,6 +4,6 @@ It's only really useful when *testing a mod* on multiple instances of the game (
 ## Versions
 | Mod version   | Game version  | BepInEx | Downloads |
 | ------------- | ------------- | ------- | --------- |
-| v1.0.0        | v2022.6.21    | [BepInEx x86](https://builds.bepinex.dev/projects/bepinex_be/562/BepInEx_UnityIL2CPP_x86_7a97bdd_6.0.0-be.562.zip) | [GitHub](https://github.com/przebor/GuestMode/releases/download/1.0.0/GuestMode-1.0.0.dll) |
+| v1.0.1        | v2022.6.21    | [BepInEx x86](https://builds.bepinex.dev/projects/bepinex_be/562/BepInEx_UnityIL2CPP_x86_7a97bdd_6.0.0-be.562.zip) | [GitHub](https://github.com/przebor/GuestMode/releases/download/1.0.0/GuestMode-1.0.0.dll) |
 ## Installation
 Just throw the mod DLL (from releases) into BepInEx plugins directory
