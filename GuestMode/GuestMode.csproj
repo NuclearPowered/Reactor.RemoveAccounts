@@ -5,9 +5,8 @@
         <DebugType>embedded</DebugType>
 
         <VersionPrefix>1.0.0</VersionPrefix>
-        <VersionSuffix>dev</VersionSuffix>
-        <Description>Mod generated using Reactor Template</Description>
-        <!-- <Authors>your name</Authors> -->
+        <Description>Return of the old guest mode!</Description>
+        <Authors>CrowdedMods</Authors>
     </PropertyGroup>
 
     <PropertyGroup>
