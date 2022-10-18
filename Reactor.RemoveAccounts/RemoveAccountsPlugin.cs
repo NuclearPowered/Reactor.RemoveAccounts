@@ -1,16 +1,13 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using Reactor;
 
-namespace GuestMode;
+namespace Reactor.RemoveAccounts;
 
-[BepInAutoPlugin]
+[BepInAutoPlugin("gg.reactor.RemoveAccounts")]
 [BepInProcess("Among Us.exe")]
 [BepInDependency(ReactorPlugin.Id)]
-[ReactorPluginSide(PluginSide.ClientOnly)]
-public partial class GuestModePlugin : BasePlugin
+public partial class RemoveAccountsPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
 

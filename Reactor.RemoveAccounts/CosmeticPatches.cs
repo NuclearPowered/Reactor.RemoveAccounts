@@ -1,10 +1,9 @@
 using HarmonyLib;
-using Il2CppSystem;
-using Reactor.Extensions;
+using Reactor.Utilities.Extensions;
 
-namespace GuestMode;
+namespace Reactor.RemoveAccounts;
 
-public class CosmeticPatches
+internal class CosmeticPatches
 {
     [HarmonyPatch(typeof(FriendsListButton), nameof(FriendsListButton.Awake))]
     public static class FriendsListDestroy
@@ -14,23 +13,13 @@ public class CosmeticPatches
             __instance.gameObject.Destroy();
         }
     }
-    
+
     [HarmonyPatch(typeof(AccountTab), nameof(AccountTab.Awake))]
     public static class AccountTabHide
     {
         public static void Prefix(AccountTab __instance)
         {
             __instance.transform.FindChild("AccountWindow").gameObject.SetActive(false);
-        }
-    }
-    
-    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.SignInFail))]
-    public static class AccountErrorHide
-    {
-        public static bool Prefix(ref Action callback)
-        {
-            callback.Invoke();
-            return false;
         }
     }
 }
