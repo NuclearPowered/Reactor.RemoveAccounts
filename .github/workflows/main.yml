@@ -25,3 +25,9 @@ jobs:
         with:
           name: Reactor.RemoveAccounts.dll
           path: Reactor.RemoveAccounts/bin/Release/net6.0/Reactor.RemoveAccounts.dll
+
+      - uses: softprops/action-gh-release@v1
+        if: github.ref_type == 'tag'
+        with:
+          draft: true
+          files: Reactor.RemoveAccounts/bin/Release/net6.0/Reactor.RemoveAccounts.dll
