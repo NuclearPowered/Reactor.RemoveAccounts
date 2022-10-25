@@ -1,4 +1,5 @@
 using System.Reflection;
+using AmongUs.Data;
 using Epic.OnlineServices;
 using HarmonyLib;
 using InnerNet;
@@ -20,9 +21,9 @@ internal class FunctionalPatches
         {
             var eosManager = EOSManager.Instance;
 
-            SaveManager.AccountLoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
-            SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
-            SaveManager.AcceptedPrivacyPolicy = 2;
+            DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+            DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
+            DataManager.Player.Onboarding.LastAcceptedPrivacyPolicyVersion = Constants.PrivacyPolicyVersion;
 
             eosManager.userId = new ProductUserId();
 
@@ -30,7 +31,7 @@ internal class FunctionalPatches
             eosManager.loginFlowFinished = true;
 
             AccountManager.Instance.privacyPolicyBg.gameObject.SetActive(false);
-            AccountManager.Instance.waitingText.gameObject.SetActive(false);
+            eosManager.CloseStartupWaitScreen();
             eosManager.HideCallbackWaitAnim();
             eosManager.IsAllowedOnline(true);
 
@@ -42,12 +43,14 @@ internal class FunctionalPatches
     [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.Awake))]
     public static class InitializePlatformInterfacePatch
     {
+        private static readonly PropertyInfo _localUserIdProperty = typeof(EpicManager).GetProperty("localUserId", BindingFlags.Static | BindingFlags.Public);
+
         public static bool Prefix(EOSManager __instance)
         {
             new DestroyableSingleton<EOSManager>(__instance.Pointer).Awake();
 
             __instance.platformInitialized = true;
-            SaveManager.LoadPlayerPrefs(true);
+            _localUserIdProperty?.SetValue(null, new EpicAccountId());
             return false;
         }
     }
