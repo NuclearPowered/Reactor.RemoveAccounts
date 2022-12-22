@@ -1,4 +1,6 @@
+using System;
 using System.Reflection;
+using System.Text.Json;
 using AmongUs.Data;
 using Epic.OnlineServices;
 using HarmonyLib;
@@ -91,7 +93,16 @@ internal class FunctionalPatches
         public static bool Prefix(out bool __result, out string matchmakerToken)
         {
             __result = true;
-            matchmakerToken = "RemoveAccounts";
+            matchmakerToken = Convert.ToBase64String(JsonSerializer.SerializeToUtf8Bytes(new
+            {
+                Content = new
+                {
+                    Puid = "RemoveAccounts",
+                    ClientVersion = Constants.GetBroadcastVersion(),
+                    ExpiresAt = DateTime.UtcNow.AddHours(1),
+                },
+                Hash = "RemoveAccounts",
+            }));
             return false;
         }
     }
