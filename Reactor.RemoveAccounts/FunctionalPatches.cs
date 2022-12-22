@@ -57,6 +57,15 @@ internal class FunctionalPatches
         }
     }
 
+    [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.ContinueInOfflineMode))]
+    public static class ContinueInOfflineModePatch
+    {
+        public static bool Prefix()
+        {
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.CanPlayOnline))]
     public static class CanPlayOnlinePatch
     {
