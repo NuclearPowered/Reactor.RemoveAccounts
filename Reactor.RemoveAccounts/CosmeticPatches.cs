@@ -22,4 +22,13 @@ internal class CosmeticPatches
             __instance.transform.FindChild("AccountWindow").gameObject.SetActive(false);
         }
     }
+
+    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.Awake))]
+    public static class DisableAccountManager
+    {
+        public static void Prefix(AccountManager __instance)
+        {
+            __instance.gameObject.SetActive(false);
+        }
+    }
 }

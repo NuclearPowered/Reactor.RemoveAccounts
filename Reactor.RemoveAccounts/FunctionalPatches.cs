@@ -49,7 +49,8 @@ internal class FunctionalPatches
 
         public static bool Prefix(EOSManager __instance)
         {
-            new DestroyableSingleton<EOSManager>(__instance.Pointer).Awake();
+            DestroyableSingleton<EOSManager>._instance = __instance;
+            if (__instance.DontDestroy) __instance.gameObject.DontDestroyOnLoad();
 
             __instance.platformInitialized = true;
             _localUserIdProperty?.SetValue(null, new EpicAccountId());
