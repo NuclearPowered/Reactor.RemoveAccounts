@@ -21,21 +21,7 @@ internal class FunctionalPatches
 
         public static bool Prefix(ref bool __result)
         {
-            var eosManager = EOSManager.Instance;
-
-            DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
-            DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
-            DataManager.Player.Onboarding.LastAcceptedPrivacyPolicyVersion = Constants.PrivacyPolicyVersion;
-
-            eosManager.userId = new ProductUserId();
-
-            eosManager.hasRunLoginFlow = true;
-            eosManager.loginFlowFinished = true;
-
-            AccountManager.Instance.privacyPolicyBg.gameObject.SetActive(false);
-            eosManager.CloseStartupWaitScreen();
-            eosManager.HideCallbackWaitAnim();
-            eosManager.IsAllowedOnline(true);
+            EOSManager.Instance.IsAllowedOnline(true);
 
             __result = false;
             return false;
@@ -54,7 +40,28 @@ internal class FunctionalPatches
 
             __instance.platformInitialized = true;
             _localUserIdProperty?.SetValue(null, new EpicAccountId());
+
+            DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+            DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
+            DataManager.Player.Onboarding.LastAcceptedPrivacyPolicyVersion = Constants.PrivacyPolicyVersion;
+
+            __instance.userId = new ProductUserId();
+
+            __instance.hasRunLoginFlow = true;
+            __instance.loginFlowFinished = true;
+
             return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.OnSceneLoaded))]
+    public static class AccountManagerOnSceneLoadedPatch
+    {
+        public static void Postfix(AccountManager __instance)
+        {
+            __instance.privacyPolicyBg.gameObject.SetActive(false);
+            __instance.waitingText.gameObject.SetActive(false);
+            __instance.postLoadWaiting.gameObject.SetActive(false);
         }
     }
 
@@ -67,8 +74,27 @@ internal class FunctionalPatches
         }
     }
 
+    [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.LoginWithCorrectPlatform))]
+    public static class LoginWithCorrectPlatformPatch
+    {
+        public static bool Prefix()
+        {
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.CanPlayOnline))]
     public static class CanPlayOnlinePatch
+    {
+        public static bool Prefix(out bool __result)
+        {
+            __result = true;
+            return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.HasFinishedLoginFlow))]
+    public static class HasFinishedLoginFlowPatch
     {
         public static bool Prefix(out bool __result)
         {
