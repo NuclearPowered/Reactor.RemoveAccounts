@@ -43,7 +43,6 @@ internal class FunctionalPatches
 
             DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
             DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
-            DataManager.Player.Onboarding.LastAcceptedPrivacyPolicyVersion = Constants.PrivacyPolicyVersion;
 
             __instance.userId = new ProductUserId();
 
@@ -85,16 +84,6 @@ internal class FunctionalPatches
 
     [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.CanPlayOnline))]
     public static class CanPlayOnlinePatch
-    {
-        public static bool Prefix(out bool __result)
-        {
-            __result = true;
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.HasFinishedLoginFlow))]
-    public static class HasFinishedLoginFlowPatch
     {
         public static bool Prefix(out bool __result)
         {
@@ -145,6 +134,24 @@ internal class FunctionalPatches
 
     [HarmonyPatch(typeof(StoreManager), nameof(StoreManager.Initialize))]
     public static class StoreManagerPatch
+    {
+        public static bool Prefix()
+        {
+            return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(AchievementManager), nameof(AchievementManager.UpdateAchievementProgress))]
+    public static class UpdateAchievementProgressPatch
+    {
+        public static bool Prefix()
+        {
+            return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(AchievementManager), nameof(AchievementManager.UnlockAchievement))]
+    public static class UnlockAchievementPatch
     {
         public static bool Prefix()
         {
